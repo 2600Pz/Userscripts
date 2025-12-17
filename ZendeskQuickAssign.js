@@ -28,10 +28,8 @@
     let assignModeActive = false;
 
 
-    document.addEventListener('keydown', key);
-    
-    function key(){
-            if (key.ctrlKey && key.shiftKey && (key.key === 'a' || key.key === 'A')) {
+ document.addEventListener('keydown', function(keypress) {
+            if (keypress.ctrlKey && keypress.shiftKey && (keypress.key === 'a' || keypress.key === 'A')) {
             key.preventDefault();
 
             const assignField = document.querySelector(`[data-test-id="${dataTestID}"]`);
@@ -46,24 +44,26 @@
         }
 
         // ACTION: 1-4
-        if (assignModeActive && TEAMS[key.key]) {
-            key.preventDefault();
-            key.stopPropagation();
+        if (assignModeActive && TEAMS[keypress.key]) {
+            keypress.preventDefault();
+            keypress.stopPropagation();
 
-            performAssignment(TEAMS[key.key]);
+            performAssignment(TEAMS[keypress.key]);
 
             // Reset
             assignModeActive = false;
+            const assignField = document.querySelector(`[data-test-id="${dataTestID}"]`);
             if(assignField) assignField.style.border = "";
         }
 
         // CANCEL: Escape
-        if (e.key === "Escape" && assignModeActive) {
+        if (keypress.key === "Escape" && assignModeActive) {
             assignModeActive = false;
+            const assignField = document.querySelector(`[data-test-id="${dataTestID}"]`);
             console.log("Assignment Mode: OFF");
             if(assignField) assignField.style.border = "";
         }
-    };
+    });
 
     function performAssignment(teamName) {
         setTimeout(() => {
@@ -71,13 +71,16 @@
 
             // Fallback: Use the MENU_TEST_ID variable
             if (!menuInput || menuInput.tagName !== 'INPUT') {
-                 menuInput = document.querySelector(`[data-test-id="${menuTestID}"] input`);
+                 menuInput = document.querySelector(`[data-test-id="${menuTestID}"]`);
             }
 
             if (menuInput) {
                 // 1. Type Team Name
-                setNativeValue(menuInput, teamName);
+                menuInput.value = teamName;
                 menuInput.dispatchEvent(new Event('input', { bubbles: true }));
+                
+                // setNativeValue(menuInput, teamName);
+                // menuInput.dispatchEvent(new Event('input', { bubbles: true }));
 
                 // 2. Wait for Filter, then Double Enter
                 setTimeout(() => {
@@ -103,16 +106,16 @@
     }
 
     // Helper for React Inputs
-    function setNativeValue(element, value) {
-        const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
-        const prototype = Object.getPrototypeOf(element);
-        const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
+    // function setNativeValue(element, value) {
+    //     const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
+    //     const prototype = Object.getPrototypeOf(element);
+    //     const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
 
-        if (valueSetter && valueSetter !== prototypeValueSetter) {
-            prototypeValueSetter.call(element, value);
-        } else {
-            valueSetter.call(element, value);
-        }
-    }
+    //     if (valueSetter && valueSetter !== prototypeValueSetter) {
+    //         prototypeValueSetter.call(element, value);
+    //     } else {
+    //         valueSetter.call(element, value);
+    //     }
+    // }
 
 })();
