@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Close Operating Hours Prompt
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Automatically closes the "Operating hours" prompt whenever the page loads and you are offline
 // @author       2600Pz
 // @match        https://*.zendesk.com/*
@@ -26,7 +26,5 @@
         clearInterval(checkAndClick);
     }
     }, 500);
-
-    // Testing update detection
 
  })();
