@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Zendesk Quick Assign
+// @name         Zendesk Select Assign
 // @namespace    http://tampermonkey.net/
-// @version      1.1
-// @description  Ctrl+Shift+A to trigger assignment mode
+// @version      1.0
+// @description  Alt+Shift+Q to trigger assignment mode
 // @match        https://*.zendesk.com/*
 // @grant        none
 // ==/UserScript==
